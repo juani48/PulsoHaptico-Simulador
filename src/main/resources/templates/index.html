@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pulso Háptico — Simulador de dispositivo</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div class="wrap">
+  <h1>Pulso Háptico — Simulador de dispositivo</h1>
+  <div class="sub">Panel para simular el dispositivo vibro-táctil y probar la app de Base44 sin hardware.</div>
+
+  <div class="card">
+    <h2>Tipo de medición</h2>
+    <p class="sub">Selecciona el escenario que utilizará el endpoint <code>/get-data</code>.</p>
+    <div class="escenarios">
+      <form th:each="scenarioType : ${scenarioTypes}" th:action="@{/set-measurement}" method="post">
+        <input type="hidden" name="type" th:value="${scenarioType.name()}">
+        <button class="escenario" type="submit"
+                th:classappend="${scenarioType == selectedScenario} ? ' activo' : ''"
+                th:attr="aria-pressed=${scenarioType == selectedScenario}">
+          <span class="titulo" th:text="${scenarioType.getName()}"></span>
+          <span class="desc" th:text="${scenarioType.getDescription()}"></span>
+        </button>
+      </form>
+    </div>
+    <p th:if="${error}" th:text="${error}" style="color: var(--bad)"></p>
+  </div>
+
+  <div class="card">
+    <h2>Tipo de conjunto de datos</h2>
+    <p class="sub">Selecciona el conjunto de datos que devolverá el endpoint <code>/get-data</code>.</p>
+    <div class="escenarios">
+      <form th:each="datasetType : ${datasetTypes}" th:action="@{/set-dataset}" method="post">
+        <input type="hidden" name="type" th:value="${datasetType.name()}">
+        <button class="escenario" type="submit"
+                th:classappend="${datasetType == selectedDataset} ? ' activo' : ''"
+                th:attr="aria-pressed=${datasetType == selectedDataset}">
+          <span class="titulo" th:text="${datasetType.getName()}"></span>
+          <span class="desc" th:text="${datasetType.getDescription()}"></span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

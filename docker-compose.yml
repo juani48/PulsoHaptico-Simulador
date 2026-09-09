@@ -1,0 +1,19 @@
+services:
+  bridge:
+    build: .
+    container_name: pulso-haptico-bridge
+    env_file: .env
+    ports:
+      - "${APP_PORT}:8080"
+    restart: unless-stopped
+
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: pulso-haptico-ngrok
+    restart: unless-stopped
+    command: ["http", "bridge:8080"]
+    env_file: .env
+    ports:
+      - "${TUNNEL_PORT}:4040"
+    depends_on:
+      - bridge
