@@ -198,16 +198,19 @@ Las variables se leen desde `application.properties`:
 
 Hay dos escenarios:
 
-- `DEREGULATED`: medición sin regulación.
-- `REGULATED`: medición con regulación.
+- `DEREGULATED`: medición con alta presión arterial.
+- `REGULATED`: medición con baja presión arterial.
 
 Se representan en `MeasurementType` y se construyen en `MeasurementBuilder`.
 
+> [!DISCLAIMER]
+> Las mediciones simuladas no reflejan la realidad y son datos de prueba. No se toman en cuenta estandares médicos.
+ 
 ### Tipo de dataset
 
 Cada nombre combina tres características:
 
-- `HS` o `LS`: estado alto o bajo.
+- `HS` o `LS`: estado alto o bajo en % de la persona.
 - `OE` o `NE`: dentro o fuera de un evento.
 - `AS` o `RS`: sensado antiguo o reciente.
 
