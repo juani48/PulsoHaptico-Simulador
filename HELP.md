@@ -201,7 +201,7 @@ Hay dos escenarios:
 - `DEREGULATED`: medición con alta presión arterial.
 - `REGULATED`: medición con baja presión arterial.
 
-Se representan en `MeasurementType` y se construyen en `MeasurementBuilder`.
+Se representan en `MeasurementType` y se construyen en `MeasurementDirector`.
 
 > [!DISCLAIMER]
 > Las mediciones simuladas no reflejan la realidad y son datos de prueba. No se toman en cuenta estandares médicos.
@@ -216,7 +216,7 @@ Cada nombre combina tres características:
 
 Ejemplo: `HSNERS` significa estado alto, fuera de evento y sensado reciente.
 
-Estos valores están definidos en `DatasetType` y se construyen en `DatasetBuilder`.
+Estos valores están definidos en `DatasetType` y se construyen en `DatasetDirector`.
 
 ### Patrón Decorator
 

@@ -8,14 +8,14 @@ import org.springframework.stereotype.Service;
 public class DatasetService {
     private Dataset dataset;
     private DatasetType datasetType;
-    private final DatasetBuilder datasetBuilder;
-    public  DatasetService(DatasetBuilder datasetBuilder) {
-        this.datasetBuilder = datasetBuilder;
+    private final DatasetDirector datasetDirector;
+    public  DatasetService(DatasetDirector datasetDirector) {
+        this.datasetDirector = datasetDirector;
         this.setDataset(DatasetType.HSNEAS);
     }
 
     public void setDataset(DatasetType datasetType) {
-        this.dataset = datasetBuilder.build(datasetType);
+        this.dataset = datasetDirector.build(datasetType);
         this.datasetType = datasetType;
     }
 

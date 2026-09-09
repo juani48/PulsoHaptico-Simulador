@@ -1,8 +1,8 @@
 package com.pulsohaptico.bridge.model.measurement;
 
 public enum MeasurementType {
-    DEREGULATED("Sin regulación", "Escenario sin regulación"),
-    REGULATED("Regulado", "Escenario con regulación");
+    DEREGULATED("Sin regulación", "Medición con alta presión arterial"),
+    REGULATED("Regulado", "Medición con baja presión arterial");
     private final String name;
     private final String description;
 

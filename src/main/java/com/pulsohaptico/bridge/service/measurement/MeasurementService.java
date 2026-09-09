@@ -8,15 +8,15 @@ import org.springframework.stereotype.Service;
 public class MeasurementService {
     private DeviceMeasurement deviceMeasurement;
     private MeasurementType scenarioType = MeasurementType.REGULATED;
-    private MeasurementBuilder scenarioBuilder;
+    private MeasurementDirector measurementDirector;
 
-    public MeasurementService(MeasurementBuilder scenarioBuilder) {
-        this.scenarioBuilder = scenarioBuilder;
+    public MeasurementService(MeasurementDirector measurementDirector) {
+        this.measurementDirector = measurementDirector;
         setScenario(MeasurementType.REGULATED);
     }
 
     public void setScenario(MeasurementType scenarioType) {
-        deviceMeasurement = scenarioBuilder.build(scenarioType);
+        deviceMeasurement = measurementDirector.build(scenarioType);
         this.scenarioType = scenarioType;
     }
 
