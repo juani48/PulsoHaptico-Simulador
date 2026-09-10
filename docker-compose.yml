@@ -3,12 +3,51 @@ services:
     build: .
     container_name: pulso-haptico-bridge
     env_file: .env
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO:-update}
     ports:
       - "${APP_PORT}:8080"
     restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: pulso-haptico-postgres
+    env_file: .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  adminer:
+    image: adminer:5.4.2-standalone
+    container_name: pulso-haptico-adminer
+    ports:
+      - "${ADMINER_PORT}:8080"
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    environment:
+      - ADMINER_DEFAULT_SERVER=postgres
 
   ngrok:
-    image: ngrok/ngrok:latest
+    image: ngrok/ngrok:3-alpine
     container_name: pulso-haptico-ngrok
     restart: unless-stopped
     command: ["http", "bridge:8080"]
@@ -17,3 +56,6 @@ services:
       - "${TUNNEL_PORT}:4040"
     depends_on:
       - bridge
+
+volumes:
+  postgres_data:

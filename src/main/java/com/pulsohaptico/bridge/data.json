@@ -1,0 +1,175 @@
+{
+  "perfiles": [
+    {
+      "id": "perfil_001",
+      "nombre": "Ana",
+      "descripcion": "Perfil con alta sensibilidad sensorial: se desregula principalmente por estímulos ambientales (ruido, luces, aglomeración) y por la falta de previsibilidad.",
+      "desreguladores": [
+        { "clave": "murmullo_personas", "sensibilidad": "alta" },
+        { "clave": "luces", "sensibilidad": "alta" },
+        { "clave": "aglomeracion_personas", "sensibilidad": "alta" },
+        { "clave": "situaciones_no_planificadas", "sensibilidad": "media" },
+        { "clave": "texturas", "sensibilidad": "media" },
+        { "clave": "usar_calzado", "sensibilidad": "baja" }
+      ],
+      "umbrales_datos_contextuales": {
+        "nivel_ruido_ambiente_db": { "atencion": 60, "alerta": 70 },
+        "pulso_bpm": { "atencion": 95, "alerta": 110 },
+        "nivel_bienestar_pct": { "atencion": 50, "alerta": 30 }
+      },
+      "avisos_preventivos_configurados": [
+        {
+          "id": "aviso_001",
+          "parametro": { "dato_contextual": "nivel_ruido_ambiente_db", "umbral": 60, "anticipacion_segundos": 300 },
+          "avisos": ["proponer_pausa_consciente", "proponer_patron_vibrotactil"]
+        },
+        {
+          "id": "aviso_002",
+          "parametro": { "dato_contextual": "actividad_actual.tipo", "condicion": "actividad_grupal", "anticipacion_segundos": 900 },
+          "avisos": ["recordar_elementos_preventivos", "planificacion_anticipada_de_charlas"]
+        }
+      ],
+      "estrategias_regulacion_configuradas": [
+        {
+          "id": "estrategia_001",
+          "parametro": { "dato_contextual": "nivel_bienestar_pct", "umbral": 40, "comparador": "menor_o_igual" },
+          "estrategias": ["brindar_lugares_de_descanso", "proponer_patron_vibrotactil", "proveer_musica_configurada"]
+        }
+      ],
+      "estrategias_autorregulacion_bajo_demanda": [
+        "brindar_respiracion_diafragmatica",
+        "brindar_lugares_de_descanso",
+        "brindar_musica"
+      ],
+      "preferencias": {
+        "patrones_vibrotactiles_agradables": ["pulso_lento_constante", "doble_toque_suave"],
+        "musica": { "genero": "instrumental_ambient", "volumen_max_pct": 40 }
+      }
+    },
+    {
+      "id": "perfil_002",
+      "nombre": "Bruno",
+      "descripcion": "Perfil con desregulación asociada a sobrecarga cognitiva y de tareas: deadlines simultáneos, discusiones sin resolución y baja tolerancia a la frustración.",
+      "desreguladores": [
+        { "clave": "sobrecarga_actividades", "sensibilidad": "alta" },
+        { "clave": "deadlines_simultaneos", "sensibilidad": "alta" },
+        { "clave": "discusiones_sin_resolucion", "sensibilidad": "media" },
+        { "clave": "poca_tolerancia_frustracion", "sensibilidad": "alta" },
+        { "clave": "hablar_en_publico", "sensibilidad": "media" },
+        { "clave": "situaciones_evaluacion", "sensibilidad": "media" }
+      ],
+      "umbrales_datos_contextuales": {
+        "nivel_ruido_ambiente_db": { "atencion": 65, "alerta": 75 },
+        "pulso_bpm": { "atencion": 100, "alerta": 115 },
+        "nivel_bienestar_pct": { "atencion": 45, "alerta": 25 }
+      },
+      "avisos_preventivos_configurados": [
+        {
+          "id": "aviso_003",
+          "parametro": { "dato_contextual": "cantidad_actividades_con_deadline_simultaneo", "umbral": 2, "anticipacion_segundos": 1800 },
+          "avisos": ["proponer_reorganizar_actividades", "proponer_pausa_consciente"]
+        },
+        {
+          "id": "aviso_004",
+          "parametro": { "dato_contextual": "actividad_actual.tipo", "condicion": "hablar_en_publico", "anticipacion_segundos": 3600 },
+          "avisos": ["planificacion_anticipada_de_charlas", "proponer_respiracion"]
+        }
+      ],
+      "estrategias_regulacion_configuradas": [
+        {
+          "id": "estrategia_002",
+          "parametro": { "dato_contextual": "pulso_bpm", "umbral": 110, "comparador": "mayor_o_igual" },
+          "estrategias": ["proponer_movimientos_configurables", "proponer_respiracion", "proveer_musica_configurada"]
+        }
+      ],
+      "estrategias_autorregulacion_bajo_demanda": [
+        "brindar_respiracion_diafragmatica",
+        "proponer_movimientos_segun_regulacion",
+        "brindar_musica"
+      ],
+      "preferencias": {
+        "movimientos_configurables": ["caminar_5_minutos", "estiramiento_hombros_cuello"],
+        "musica": { "genero": "lofi", "volumen_max_pct": 55 }
+      }
+    }
+  ],
+  "escenarios_desregulacion": [
+    {
+      "id": "escenario_001",
+      "perfil_id": "perfil_001",
+      "contexto_evento": {
+        "estado_evento": "durante_evento",
+        "actividad_actual": { "tipo": "reunion_de_trabajo", "movible": false, "tiene_deadline": false, "desgaste": "medio" }
+      },
+      "datos_contextuales": {
+        "timestamp": "2026-09-09T10:15:00-03:00",
+        "pulso_bpm": 108,
+        "nivel_ruido_ambiente_db": 74,
+        "nivel_bienestar_pct": 38,
+        "posicionamiento": "oficina - sala de reuniones"
+      },
+      "desregulador_activado": "murmullo_personas",
+      "aviso_emitido_id": "aviso_001",
+      "estrategia_sugerida_id": "estrategia_001",
+      "resultado_esperado": "Se ofrece patrón vibrotáctil y pausa consciente; si el nivel de bienestar no mejora en los próximos minutos, se sugiere retirarse a un lugar de descanso."
+    },
+    {
+      "id": "escenario_002",
+      "perfil_id": "perfil_001",
+      "contexto_evento": {
+        "estado_evento": "antes_de_evento",
+        "actividad_actual": { "tipo": "actividad_grupal", "movible": true, "tiene_deadline": false, "desgaste": "alto" }
+      },
+      "datos_contextuales": {
+        "timestamp": "2026-09-09T14:00:00-03:00",
+        "pulso_bpm": 88,
+        "nivel_ruido_ambiente_db": 55,
+        "nivel_bienestar_pct": 62,
+        "posicionamiento": "casa"
+      },
+      "desregulador_activado": "aglomeracion_personas",
+      "aviso_emitido_id": "aviso_002",
+      "estrategia_sugerida_id": null,
+      "resultado_esperado": "Aviso anticipado 15 minutos antes: recordar llevar protectores auditivos y proponer planificar mentalmente puntos de la conversación."
+    },
+    {
+      "id": "escenario_003",
+      "perfil_id": "perfil_002",
+      "contexto_evento": {
+        "estado_evento": "durante_evento",
+        "actividad_actual": { "tipo": "actividad_individual", "movible": false, "tiene_deadline": true, "desgaste": "alto" }
+      },
+      "datos_contextuales": {
+        "timestamp": "2026-09-09T16:30:00-03:00",
+        "pulso_bpm": 116,
+        "nivel_ruido_ambiente_db": 48,
+        "nivel_bienestar_pct": 28,
+        "posicionamiento": "oficina - escritorio",
+        "cantidad_actividades_con_deadline_simultaneo": 3
+      },
+      "desregulador_activado": "deadlines_simultaneos",
+      "aviso_emitido_id": "aviso_003",
+      "estrategia_sugerida_id": "estrategia_002",
+      "resultado_esperado": "Se propone reorganizar actividades y se sugiere una pausa con movimiento breve antes de continuar."
+    },
+    {
+      "id": "escenario_004",
+      "perfil_id": "perfil_002",
+      "contexto_evento": {
+        "estado_evento": "despues_evento",
+        "actividad_actual": { "tipo": "reunion_de_trabajo", "movible": false, "tiene_deadline": false, "desgaste": "alto" }
+      },
+      "datos_contextuales": {
+        "timestamp": "2026-09-09T18:05:00-03:00",
+        "pulso_bpm": 102,
+        "nivel_ruido_ambiente_db": 42,
+        "nivel_bienestar_pct": 33,
+        "posicionamiento": "oficina - sala de reuniones"
+      },
+      "desregulador_activado": "discusiones_sin_resolucion",
+      "aviso_emitido_id": null,
+      "estrategia_sugerida_id": "estrategia_002",
+      "resultado_esperado": "Al finalizar el evento y detectar bienestar bajo, se ofrece música configurada y respiración guiada para bajar la activación acumulada."
+    }
+  ]
+}
