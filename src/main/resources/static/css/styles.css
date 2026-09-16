@@ -75,6 +75,14 @@ button.escenario.activo { border-color: var(--accent); background: #202544; }
 button.escenario .titulo { font-weight: 600; display: block; }
 button.escenario .desc { color: var(--muted); font-size: 0.75rem; }
 
+.control { margin-top: 18px; }
+.control:first-of-type { margin-top: 0; }
+.control-header { display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; }
+.control-header label { font-weight: 600; }
+.control-header output { margin-left: auto; color: var(--accent); font-size: 1.2rem; font-weight: 600; }
+.control-header span { color: var(--muted); font-size: 0.75rem; }
+.control input[type="range"] { width: 100%; accent-color: var(--accent); }
+
 .manual { display: flex; align-items: center; gap: 12px; }
 .manual input[type="range"] { flex: 1; }
 .manual button {

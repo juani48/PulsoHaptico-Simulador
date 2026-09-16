@@ -12,39 +12,88 @@
   <div class="sub">Panel para simular el dispositivo vibro-táctil y probar la app de Base44 sin hardware.</div>
 
   <div class="card">
-    <h2>Tipo de medición</h2>
-    <p class="sub">Selecciona el escenario que utilizará el endpoint <code>/get-data</code>.</p>
+    <h2>Escenarios</h2>
+    <p class="sub">Selecciona un escenario para cargar los valores iniciales de pulso y estado.</p>
     <div class="escenarios">
-      <form th:each="scenarioType : ${scenarioTypes}" th:action="@{/set-measurement}" method="post">
-        <input type="hidden" name="type" th:value="${scenarioType.name()}">
+      <form th:each="scenario : ${scenarios}" th:action="@{/set-scenario}" method="post">
+        <input type="hidden" name="id" th:value="${scenario.id}">
         <button class="escenario" type="submit"
-                th:classappend="${scenarioType == selectedScenario} ? ' activo' : ''"
-                th:attr="aria-pressed=${scenarioType == selectedScenario}">
-          <span class="titulo" th:text="${scenarioType.getName()}"></span>
-          <span class="desc" th:text="${scenarioType.getDescription()}"></span>
+                th:classappend="${selectedScenario != null and scenario.id == selectedScenario.id} ? ' activo' : ''"
+                th:attr="aria-pressed=${selectedScenario != null and scenario.id == selectedScenario.id}">
+          <span class="titulo" th:text="|Escenario ${scenario.id}|"></span>
+          <span class="desc" th:text="${scenario.description}"></span>
         </button>
       </form>
     </div>
+    <p th:if="${scenarios.isEmpty()}" class="sub">No hay escenarios disponibles.</p>
     <p th:if="${error}" th:text="${error}" style="color: var(--bad)"></p>
   </div>
 
   <div class="card">
-    <h2>Tipo de conjunto de datos</h2>
-    <p class="sub">Selecciona el conjunto de datos que devolverá el endpoint <code>/get-data</code>.</p>
-    <div class="escenarios">
-      <form th:each="datasetType : ${datasetTypes}" th:action="@{/set-dataset}" method="post">
-        <input type="hidden" name="type" th:value="${datasetType.name()}">
-        <button class="escenario" type="submit"
-                th:classappend="${datasetType == selectedDataset} ? ' activo' : ''"
-                th:attr="aria-pressed=${datasetType == selectedDataset}">
-          <span class="titulo" th:text="${datasetType.getName()}"></span>
-          <span class="desc" th:text="${datasetType.getDescription()}"></span>
-        </button>
-      </form>
+    <h2>Estado de la persona</h2>
+    <p class="sub">Ajusta los valores simulados. Al seleccionar un escenario se cargan sus valores base.</p>
+
+    <div class="control">
+      <div class="control-header">
+        <label for="pulse">Pulso</label>
+        <output id="pulse-value" for="pulse"
+                th:text="${pulse}">0</output>
+        <span>BPM</span>
+      </div>
+      <input id="pulse" type="range" min="40" max="180" step="1"
+             th:value="${pulse}">
+    </div>
+
+    <div class="control">
+      <div class="control-header">
+        <label for="state">Estado</label>
+        <output id="state-value" for="state"
+                th:text="${state}">0</output>
+        <span>%</span>
+      </div>
+      <input id="state" type="range" min="0" max="100" step="1"
+             th:value="${state}">
     </div>
   </div>
 
 </div>
+
+<script>
+  const pulse = document.getElementById("pulse");
+  const pulseValue = document.getElementById("pulse-value");
+  const state = document.getElementById("state");
+  const stateValue = document.getElementById("state-value");
+
+  function updateOutput(input, output, formatter) {
+    output.value = formatter(input.value);
+    output.textContent = formatter(input.value);
+  }
+
+  let updateTimer;
+  function updateVitals() {
+    clearTimeout(updateTimer);
+    updateTimer = setTimeout(() => {
+      const body = new URLSearchParams({
+        pulse: pulse.value,
+        state: state.value
+      });
+      fetch("/set-vitals", {
+        method: "POST",
+        headers: {"Content-Type": "application/x-www-form-urlencoded"},
+        body
+      });
+    }, 100);
+  }
+
+  pulse.addEventListener("input", () => {
+    updateOutput(pulse, pulseValue, value => value);
+    updateVitals();
+  });
+  state.addEventListener("input", () => {
+    updateOutput(state, stateValue, value => value);
+    updateVitals();
+  });
+</script>
 
 </body>
 </html>

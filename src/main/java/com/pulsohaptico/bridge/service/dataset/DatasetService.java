@@ -19,6 +19,10 @@ public class DatasetService {
         this.datasetType = datasetType;
     }
 
+    public void setState(double state) {
+        this.dataset.setState(state);
+    }
+
     public DatasetType getDatasetType() { return this.datasetType; }
     public Dataset getDataset() { return this.dataset; }
 }

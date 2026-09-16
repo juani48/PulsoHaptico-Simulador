@@ -1,26 +1,19 @@
 package com.pulsohaptico.bridge.controller;
 
-import com.pulsohaptico.bridge.model.dataset.DatasetType;
-import com.pulsohaptico.bridge.model.measurement.MeasurementType;
-import com.pulsohaptico.bridge.service.dataset.DatasetService;
-import com.pulsohaptico.bridge.service.measurement.MeasurementService;
+import com.pulsohaptico.bridge.model.Scenario;
+import com.pulsohaptico.bridge.service.ScenarioService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-
 @Controller
 @RequiredArgsConstructor
 public class RenderController {
-    private static final List<MeasurementType> SCENARIO_TYPES = List.of(MeasurementType.values());
-    private static final List<DatasetType> DATASET_TYPES = List.of(DatasetType.values());
-
-    private final MeasurementService measurementService;
-    private final DatasetService datasetService;
+    private final ScenarioService scenarioService;
 
     @GetMapping("/")
     public String index(Model model) {
@@ -28,32 +21,29 @@ public class RenderController {
         return "index";
     }
 
-    @PostMapping("/set-measurement")
-    public String setScenario(@RequestParam MeasurementType type, Model model) {
-        try {
-            measurementService.setScenario(type);
-            return "redirect:/";
-        } catch (IllegalArgumentException e) {
-            addPageData(model);
-            model.addAttribute("error", e.getMessage());
-            return "index";
-        }
-    }
-
-    @PostMapping("/set-dataset")
-    public String setDataset(@RequestParam DatasetType type, Model model) {
-        datasetService.setDataset(type);
+    @PostMapping("/set-scenario")
+    public String setScenario(@RequestParam Long id) {
+        scenarioService.select(id);
         return "redirect:/";
     }
 
-    private void addPageData(Model model) {
-        addScenarioData(model);
-        model.addAttribute("datasetTypes", DATASET_TYPES);
-        model.addAttribute("selectedDataset", datasetService.getDatasetType());
+    @PostMapping("/set-vitals")
+    public ResponseEntity<Void> setVitals(
+            @RequestParam double pulse,
+            @RequestParam double state
+    ) {
+            if (pulse < 40 || pulse > 180 || state < 0 || state > 100) {
+                return ResponseEntity.badRequest().build();
+            }
+            scenarioService.setVitals(pulse, state);
+            return ResponseEntity.ok().build();
     }
 
-    private void addScenarioData(Model model) {
-        model.addAttribute("scenarioTypes", SCENARIO_TYPES);
-        model.addAttribute("selectedScenario", measurementService.getScenarioType());
+    private void addPageData(Model model) {
+            Scenario selectedScenario = scenarioService.getSelectedScenario();
+            model.addAttribute("scenarios", scenarioService.findAll());
+            model.addAttribute("selectedScenario", selectedScenario);
+            model.addAttribute("pulse", scenarioService.getPulse());
+            model.addAttribute("state", scenarioService.getState());
     }
 }

@@ -5,11 +5,9 @@ import lombok.Data;
 
 @Data
 public class Response {
-    @JsonProperty("measurement") private MeasurementResponse measurementResponse;
-    @JsonProperty("dataset") private DatasetResponse datasetResponse;
+    @JsonProperty("scenario") private ScenarioResponse scenarioResponse;
 
-    public Response(MeasurementResponse measurementResponse, DatasetResponse datasetResponse) {
-        this.measurementResponse = measurementResponse;
-        this.datasetResponse = datasetResponse;
+    public Response(ScenarioResponse scenarioResponse) {
+        this.scenarioResponse = scenarioResponse;
     }
 }

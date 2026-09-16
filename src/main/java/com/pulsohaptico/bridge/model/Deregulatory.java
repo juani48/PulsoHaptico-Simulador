@@ -23,11 +23,12 @@ public class Deregulatory {
     private Double warningThreshold;
 
     @OneToOne
-    @JoinColumn
-    private PreliminaryNotice preliminaryNotice;
+    @JoinColumn(name = "preventive_alert_id")
+    private PreventiveAlert preventiveAlert;
 
-    @OneToOne
-    @JoinColumn
-    private Strategy strategy;
-
+    public Deregulatory(String description, Double alertThreshold, Double warningThreshold) {
+        this.description = description;
+        this.alertThreshold = alertThreshold;
+        this.warningThreshold = warningThreshold;
+    }
 }

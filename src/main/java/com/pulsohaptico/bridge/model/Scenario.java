@@ -5,9 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 @Entity
 @Getter
 @Setter
@@ -19,19 +16,20 @@ public class Scenario {
     @Column(nullable = false)
     private String description;
 
-    @OneToMany
-    @JoinColumn
+    @Column(nullable = false, name = "base_pulse")
+    private Double basePulse;
+
+    @Column(nullable = false, name = "base_state")
+    private Double baseState;
+
+    @ManyToOne
+    @JoinColumn(name = "profile_id")
     private Profile profile;
 
-    @Column(nullable = false)
-    private Double pulse; // starter pulse
-
-    @Column(nullable = false)
-    private Double state; // starter state
-
-    @Column(nullable = false)
-    private LocalDateTime moment;
-
-    @ManyToMany
-    private List<Activity> activities;
+    public Scenario(String description, Double basePulse, Double baseState, Profile profile) {
+        this.description = description;
+        this.basePulse = basePulse;
+        this.baseState = baseState;
+        this.profile = profile;
+    }
 }

@@ -20,6 +20,10 @@ public class MeasurementService {
         this.scenarioType = scenarioType;
     }
 
+    public void setPulse(double pulse) {
+        deviceMeasurement.setPulse(pulse);
+    }
+
     public DeviceMeasurement getDeviceMeasurement() { return this.deviceMeasurement; }
     public MeasurementType getScenarioType() { return this.scenarioType; }
 
