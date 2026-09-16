@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RequiredArgsConstructor
-@RestController("/api")
 @Tag(name = "Bridge", description = "Operaciones para consultar el estado del bridge")
 public class BridgeController {
     private final ScenarioService scenarioService;
